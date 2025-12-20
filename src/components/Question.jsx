@@ -8,13 +8,12 @@ export default function Question({ question, selected, choose }) {
                         key={i}
                         onClick={() => choose(i)}
                         className={`border rounded-xl p-3 text-left transition 
-          ${selected === i ? "bg-slate-400 text-white" : "hover:bg-slate-500 text-inherit"}`}
+          ${selected === i ? "bg-slate-400 text-white" : "hover:bg-slate-500 hover:text-white "}`}
                     >
                         {op}
                     </button>
                 ))}
             </div>
         </div>
-
     );
 }
