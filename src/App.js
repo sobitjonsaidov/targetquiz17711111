@@ -20,17 +20,13 @@ export default function App() {
   const [dark, setDark] = useState(false);
 
   useEffect(() => {
-    if (dark) document.documentElement.classList.add("dark");
-    else document.documentElement.classList.remove("dark");
+    document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
 
-  useEffect(() => {
-    setQuestions(shuffleArray(QUESTIONS));
-  }, []);
+  useEffect(() => setQuestions(shuffleArray(QUESTIONS)), []);
 
   useEffect(() => {
-    if (finished) return;
-    if (time <= 0) return setFinished(true);
+    if (finished || time <= 0) return setFinished(true);
     const timer = setInterval(() => setTime((prev) => prev - 1), 1000);
     return () => clearInterval(timer);
   }, [time, finished]);
@@ -55,34 +51,37 @@ export default function App() {
     dark ? "bg-slate-900" : "bg-slate-200"
   }`;
 
-  const cardClasses = `text-center w-full max-w-md sm:max-w-lg md:max-w-2xl mx-auto rounded-2xl shadow p-6 select-none transition-colors duration-300 
-    ${dark ? "bg-slate-800 text-white" : "bg-white text-gray-900"}`;
+
+  const cardClasses = `text-center w-full sm:max-w-lg md:max-w-2xl mx-auto rounded-2xl shadow p-4 sm:p-6 md:p-8 select-none transition-colors duration-300 ${
+    dark ? "bg-slate-800 text-white" : "bg-white text-gray-900"
+  }`;
 
   if (!questions.length) return <div>Loading...</div>;
 
   if (finished) {
     return (
       <div className={wrapperClasses}>
-       <div className="flex w-full mb-6 me-96 justify-end">
-        <button
-          onClick={() => setDark(!dark)}
-          className="relative w-20 h-10 rounded-full bg-slate-500 dark:bg-gray-700"
-        >
-          <div
-            className={`absolute top-1 left-1 w-8 h-8 rounded-full bg-white flex items-center justify-center transition-transform ${
-              dark ? "translate-x-10" : "translate-x-0"
-            }`}
+        <div className="flex w-full justify-end mb-6">
+          <button
+            onClick={() => setDark(!dark)}
+            className="relative w-20 h-10 rounded-full bg-slate-500 dark:bg-gray-700"
           >
-            {dark ? <FaMoon className="text-slate-400" /> : <FaSun className="text-slate-400" />}
-          </div>
-        </button>
-      </div>
+            <div
+              className={`absolute top-1 left-1 w-8 h-8 rounded-full bg-white flex items-center justify-center transition-transform ${
+                dark ? "translate-x-10" : "translate-x-0"
+              }`}
+            >
+              {dark ? <FaMoon className="text-slate-400" /> : <FaSun className="text-slate-400" />}
+            </div>
+          </button>
+        </div>
 
-        <img src={dark ? logolight : logodark} alt="Logo" className="w-40 mb-6 mx-auto" />
+        <img src={dark ? logolight : logodark} alt="Logo" className="w-40 sm:w-48 md:w-52 lg:w-56 xl:w-64 mb-6 mx-auto" />
+
         <div className={cardClasses}>
-          <h1 className="text-2xl font-bold mb-4">Result</h1>
-          <p className="text-lg">Score: {score}</p>
-          <p className="text-xl font-semibold mt-2">Level: {level}</p>
+          <h1 className="text-3xl sm:text-4xl font-bold mb-4">Result</h1>
+          <p className="text-xl sm:text-2xl">Score: {score}</p>
+          <p className="text-2xl sm:text-3xl font-semibold mt-2">Level: {level}</p>
         </div>
       </div>
     );
@@ -112,7 +111,7 @@ export default function App() {
       />
 
       <div className={cardClasses}>
-        <div className="flex justify-between mb-4 text-sm">
+        <div className="flex justify-between mb-4 text-sm sm:text-base">
           <span>
             Question {index + 1}/{questions.length}
           </span>
@@ -128,7 +127,7 @@ export default function App() {
             onClick={() =>
               index + 1 === questions.length ? setFinished(true) : setIndex(index + 1)
             }
-            className="px-6 py-3 rounded-xl bg-slate-600 text-white"
+            className="px-5 py-2 sm:px-6 sm:py-3 text-2xl sm:text-3xl rounded-xl bg-slate-600 text-white transition-colors hover:bg-slate-700"
           >
             {index + 1 === questions.length ? "Finish" : "Next"}
           </button>
